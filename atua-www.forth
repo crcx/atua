@@ -106,8 +106,7 @@ drop
   dup fetch gopher:icon n:inc
   [ ASCII:HT [ #0 ] case ] s:map
   dup s:length over + n:inc
-  '<a_href=" puts puts '"> puts puts '</a><br> puts
-;
+  '<a_href="%s">%s</a><br> s:with-format puts ;
 :gopher:generate-index (f-)
   'Content-type:_text/html puts eol eol
   file:R file:open !FID

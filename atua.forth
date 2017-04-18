@@ -55,7 +55,7 @@ drop
 ;
 ---reveal---
 :gopher:i (s-)
-  $i putc puts tab tab 'null.host puts tab $1 putc eol ;
+  'i%s\t\tnull.host\t1 s:with-format puts eol ;
 :gopher:get-selector (-)
   &Selector gets ;
 (Rewrite_This:_It's_too_big)

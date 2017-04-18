@@ -191,7 +191,7 @@ the index footer.
 
 ````
 :gopher:i (s-)
-  $i putc puts tab tab 'null.host puts tab $1 putc eol ;
+  'i%s\t\tnull.host\t1 s:with-format puts eol ;
 ````
 
 ````

@@ -204,15 +204,6 @@ An information line gets a format like:
 The `gopher:i` displays a string in this format. It's used later for
 the index footer.
 
-````````
-
-An information line gets a format like:
-
-  i...text...<tab><tab>null.host<tab>port<cr,lf>
-
-The `gopher:i` displays a string in this format. It's used later for
-the index footer.
-
 ````
 :gopher:i (s-)
   [ puts ] html:tt html:br eol ;
@@ -273,8 +264,8 @@ The `gopher:icon` displays an indicator for menu items.
   dup fetch gopher:icon n:inc
   [ ASCII:HT [ #0 ] case ] s:map
   dup s:length over + n:inc
-  '<a_href=" puts puts '"> puts puts '</a><br> puts
-;
+  '<a_href="%s">%s</a><br> s:with-format puts ;
+
 :gopher:generate-index (f-)
   'Content-type:_text/html puts eol eol
   file:R file:open !FID
