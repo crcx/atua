@@ -37,7 +37,7 @@ Atua needs to know:
 '/home/crc/atua s:keep 'PATH const
 '/gophermap     s:keep 'DEFAULT-INDEX const
 #1024  'MAX-SELECTOR-LENGTH const
-#65535 #4 * 'MAX-FILE-SIZE const
+#1000000 #4 * 'MAX-FILE-SIZE const
 ````
 
 # I/O Words
@@ -107,8 +107,7 @@ variables and buffers are kept private.
 'Selector d:create
   MAX-SELECTOR-LENGTH n:inc allot
 
-'Buffer d:create
-  MAX-FILE-SIZE n:inc allot
+:buffer here ;
 ````
 
 Next up, variables to track information related to the requested
@@ -216,18 +215,18 @@ the index footer.
 
 :gopher:read-file (f-s)
   file:R file:open !FID
-  &Buffer buffer:set
-  MAX-FILE-SIZE [ @FID file:read buffer:add ] times
+  buffer buffer:set
   @FID file:size !Size
+  @Size [ @FID file:read buffer:add ] times
   @FID file:close
-  &Buffer
+  buffer
 ;
 
 :gopher:generate-index (f-)
   file:R file:open !FID
   @FID file:size !Size
-  [ &Buffer gopher:gets
-    &Buffer tab? [ puts eol ] [ gopher:i ] choose
+  [ buffer gopher:gets
+    buffer tab? [ puts eol ] [ gopher:i ] choose
     @FID file:tell @Size lt? ] while
   @FID file:close
 ;

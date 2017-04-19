@@ -88,7 +88,7 @@ drop
     [ requested-file ]
     [ requested-index file:exists?
       [ requested-index &Server-Info v:on  ]
-      [ PATH '/empty.index.html s:append ] choose
+      [ PATH '/empty.index s:append ] choose
     ] choose
   ]
   [ PATH DEFAULT-INDEX s:append &Server-Info v:on ] choose
@@ -125,8 +125,7 @@ drop
   [ gopher:generate-index
     [ #70 [ $_ putc ] times ] html:tt html:br eol
     'forthworks.com:80_/_atua-www_/_running_on_retro gopher:i ]
-  [ 'Content-type:_application/octet-stream puts eol eol
-    gopher:read-file eol gopher:send ] choose
+  [ gopher:read-file eol gopher:send ] choose
 ;
 }}
 gopher:server
