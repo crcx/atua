@@ -39,6 +39,16 @@ drop
 'Server-Info var
 :requested-file  (-s)  @Requested-File  ;
 :requested-index (-s)  @Requested-Index ;
+:get-mime-type (s-s)
+  [ $. s:index-of ] sip +
+  '.pdf  [ 'application/pdf  ] s:case
+  '.txt  [ 'text/plain       ] s:case
+  '.md   [ 'text/markdown    ] s:case
+  '.gz   [ 'application/gzip ] s:case
+  '.zip  [ 'application/zip  ] s:case
+  '.htm  [ 'text/html        ] s:case
+  '.html [ 'text/html        ] s:case
+  drop 'application/octet-stream ;
 :with-path (-s)
   PATH &Selector s:chop s:append ;
 :construct-filenames (-)
@@ -116,6 +126,7 @@ drop
   @FID file:close
 ;
 :gopher:send (p-)
+  requested-file get-mime-type 'Content-type:_ puts puts eol eol
   @Size [ fetch-next putc ] times drop ;
 :gopher:server
   gopher:get-selector
@@ -125,7 +136,7 @@ drop
   [ gopher:generate-index
     [ #70 [ $_ putc ] times ] html:tt html:br eol
     'forthworks.com:80_/_atua-www_/_running_on_retro gopher:i ]
-  [ gopher:read-file eol gopher:send ] choose
+  [ gopher:read-file gopher:send ] choose
 ;
 }}
 gopher:server

@@ -154,6 +154,19 @@ These are just simple accessor words to aid in overall readability.
 ````
 
 ````
+:get-mime-type (s-s)
+  [ $. s:index-of ] sip +
+  '.pdf  [ 'application/pdf  ] s:case
+  '.txt  [ 'text/plain       ] s:case
+  '.md   [ 'text/markdown    ] s:case
+  '.gz   [ 'application/gzip ] s:case
+  '.zip  [ 'application/zip  ] s:case
+  '.htm  [ 'text/html        ] s:case
+  '.html [ 'text/html        ] s:case
+  drop 'application/octet-stream ;
+````
+
+````
 :with-path (-s)
   PATH &Selector s:chop s:append ;
 :construct-filenames (-)
@@ -283,6 +296,7 @@ bytes to stdout, fixing this issue.
 
 ````
 :gopher:send (p-)
+  requested-file get-mime-type 'Content-type:_ puts puts eol eol
   @Size [ fetch-next putc ] times drop ;
 ````
 
@@ -297,7 +311,7 @@ The only thing left is the top level server.
   [ gopher:generate-index
     [ #70 [ $_ putc ] times ] html:tt html:br eol
     'forthworks.com:80_/_atua-www_/_running_on_retro gopher:i ]
-  [ gopher:read-file eol gopher:send ] choose
+  [ gopher:read-file gopher:send ] choose
 ;
 ````
 
