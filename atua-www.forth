@@ -30,8 +30,7 @@ drop
 {{
 'Selector d:create
   MAX-SELECTOR-LENGTH n:inc allot
-'Buffer d:create
-  MAX-FILE-SIZE n:inc allot
+:buffer here ;
 'Requested-File var
 'Requested-Index var
 'FID var
@@ -89,18 +88,18 @@ drop
     [ requested-file ]
     [ requested-index file:exists?
       [ requested-index &Server-Info v:on  ]
-      [ PATH '/empty.index s:append ] choose
+      [ PATH '/empty.index.html s:append ] choose
     ] choose
   ]
   [ PATH DEFAULT-INDEX s:append &Server-Info v:on ] choose
 ;
 :gopher:read-file (f-s)
   file:R file:open !FID
-  &Buffer buffer:set
-  MAX-FILE-SIZE [ @FID file:read buffer:add ] times
+  buffer buffer:set
   @FID file:size !Size
+  @Size [ @FID file:read buffer:add ] times
   @FID file:close
-  &Buffer
+  buffer
 ;
 :link
   dup fetch gopher:icon n:inc
@@ -111,8 +110,8 @@ drop
   'Content-type:_text/html puts eol eol
   file:R file:open !FID
   @FID file:size !Size
-  [ &Buffer gopher:gets
-    &Buffer tab? [ [ link ] html:tt eol ] [ gopher:i ] choose
+  [ buffer gopher:gets
+    buffer tab? [ [ link ] html:tt eol ] [ gopher:i ] choose
     @FID file:tell @Size lt? ] while
   @FID file:close
 ;
@@ -126,7 +125,8 @@ drop
   [ gopher:generate-index
     [ #70 [ $_ putc ] times ] html:tt html:br eol
     'forthworks.com:80_/_atua-www_/_running_on_retro gopher:i ]
-  [ gopher:read-file eol gopher:send ] choose
+  [ 'Content-type:_application/octet-stream puts eol eol
+    gopher:read-file eol gopher:send ] choose
 ;
 }}
 gopher:server
