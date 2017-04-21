@@ -156,14 +156,30 @@ These are just simple accessor words to aid in overall readability.
 ````
 :get-mime-type (s-s)
   [ $. s:index-of ] sip +
-  '.pdf  [ 'application/pdf  ] s:case
-  '.txt  [ 'text/plain       ] s:case
-  '.md   [ 'text/markdown    ] s:case
-  '.gz   [ 'application/gzip ] s:case
-  '.zip  [ 'application/zip  ] s:case
-  '.htm  [ 'text/html        ] s:case
-  '.html [ 'text/html        ] s:case
-  drop 'application/octet-stream ;
+  (textual_files)
+    '.txt   [ 'text/plain               ] s:case
+    '.md    [ 'text/markdown            ] s:case
+    '.htm   [ 'text/html                ] s:case
+    '.html  [ 'text/html                ] s:case
+    '.css   [ 'text/css                 ] s:case
+    '.c     [ 'text/plain               ] s:case
+    '.h     [ 'text/plain               ] s:case
+    '.forth [ 'text/plain               ] s:case
+    '.retro [ 'text/plain               ] s:case
+  (image_files)
+    '.png   [ 'image/png                ] s:case
+    '.jpg   [ 'image/jpeg               ] s:case
+    '.jpeg  [ 'image/jpeg               ] s:case
+    '.gif   [ 'image/gif                ] s:case
+    '.bmp   [ 'image/bmp                ] s:case
+  (application_files)
+    '.pdf   [ 'application/pdf          ] s:case
+    '.gz    [ 'application/gzip         ] s:case
+    '.zip   [ 'application/zip          ] s:case
+    '.json  [ 'application/json         ] s:case
+    '.js    [ 'application/x-javascript ] s:case
+    '.xml   [ 'application/xml          ] s:case
+  drop 'text/html ;
 ````
 
 ````
@@ -256,7 +272,7 @@ The `gopher:icon` displays an indicator for menu items.
     [ requested-file ]
     [ requested-index file:exists?
       [ requested-index &Server-Info v:on  ]
-      [ PATH '/empty.index s:append ] choose
+      [ PATH '/empty.index.html s:append ] choose
     ] choose
   ]
   [ PATH DEFAULT-INDEX s:append &Server-Info v:on ] choose
