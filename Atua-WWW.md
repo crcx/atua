@@ -1,3 +1,5 @@
+#!/home/crc/retro12/bin/rre
+
 # Atua-WWW: A Gopher Server for the Web
 
 Atua is a gopher server written in Retro. This is a variation which
@@ -22,11 +24,6 @@ Atua-WWW translates the Gophermap into HTML with minimal formatting.
 Atua-WWW uses Retro's *rre* interface layer. Designed to run a single
 program then exit, this makes using Retro as a scripting language
 possible.
-
-````
-#!/home/crc/retro12/bin/rre
-drop
-````
 
 # Configuration
 
@@ -66,34 +63,11 @@ The `gets` word could easily be made more generic in terms of what
 it checks for. This suffices for a Gopher server though.
 
 ````
-:getc (-c) `1001 ;
 :eol? (c-f)
   [ ASCII:CR eq? ] [ ASCII:LF eq? ] [ ASCII:SPACE eq? ] tri or or ;
 :gets (a-)
   buffer:set
   [ getc dup buffer:add eol? not ] while ;
-````
-
-*File I/O*
-
-Retro's file I/O words are still under development. This is similar
-to the iOS `file:` namespace, but there are some small differences.
-
-````
-#0 'file:R const
-#1 'file:W const
-#2 'file:A const
-#3 'file:M const
-:file:open  (sm-h) `118 ;
-:file:close (h-)   `119 ;
-:file:read  (h-c)  `120 ;
-:file:write (ch-f) `121 ;
-:file:tell  (ch-f) `122 ;
-:file:size  (h-n)  `124 ;
-:file:exists?  (s-f)
-  file:R file:open dup n:-zero?
-  [ file:close TRUE ]
-  [ drop FALSE ] choose ;
 ````
 
 # An HTML Namespace
@@ -157,6 +131,37 @@ These are just simple accessor words to aid in overall readability.
 :get-mime-type (s-s)
   [ $. s:index-of ] sip +
   (textual_files)
+    '.01    [ 'text/plain               ] s:case
+    '.02    [ 'text/plain               ] s:case
+    '.03    [ 'text/plain               ] s:case
+    '.04    [ 'text/plain               ] s:case
+    '.05    [ 'text/plain               ] s:case
+    '.06    [ 'text/plain               ] s:case
+    '.07    [ 'text/plain               ] s:case
+    '.08    [ 'text/plain               ] s:case
+    '.09    [ 'text/plain               ] s:case
+    '.10    [ 'text/plain               ] s:case
+    '.11    [ 'text/plain               ] s:case
+    '.12    [ 'text/plain               ] s:case
+    '.13    [ 'text/plain               ] s:case
+    '.14    [ 'text/plain               ] s:case
+    '.15    [ 'text/plain               ] s:case
+    '.16    [ 'text/plain               ] s:case
+    '.17    [ 'text/plain               ] s:case
+    '.18    [ 'text/plain               ] s:case
+    '.19    [ 'text/plain               ] s:case
+    '.20    [ 'text/plain               ] s:case
+    '.21    [ 'text/plain               ] s:case
+    '.22    [ 'text/plain               ] s:case
+    '.23    [ 'text/plain               ] s:case
+    '.24    [ 'text/plain               ] s:case
+    '.25    [ 'text/plain               ] s:case
+    '.26    [ 'text/plain               ] s:case
+    '.27    [ 'text/plain               ] s:case
+    '.28    [ 'text/plain               ] s:case
+    '.29    [ 'text/plain               ] s:case
+    '.30    [ 'text/plain               ] s:case
+    '.31    [ 'text/plain               ] s:case
     '.txt   [ 'text/plain               ] s:case
     '.md    [ 'text/markdown            ] s:case
     '.htm   [ 'text/html                ] s:case
@@ -179,7 +184,7 @@ These are just simple accessor words to aid in overall readability.
     '.json  [ 'application/json         ] s:case
     '.js    [ 'application/x-javascript ] s:case
     '.xml   [ 'application/xml          ] s:case
-  drop 'text/html ;
+  drop 'text/plain ;
 ````
 
 ````
@@ -289,9 +294,11 @@ The `gopher:icon` displays an indicator for menu items.
 
 ````
 :link
+  dup fetch $h eq? push
   dup fetch gopher:icon n:inc
   [ ASCII:HT [ #0 ] case ] s:map
   dup s:length over + n:inc
+  pop [ #4 + ] if
   '<a_href="%s">%s</a><br> s:with-format puts ;
 
 :gopher:generate-index (f-)

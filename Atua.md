@@ -1,3 +1,5 @@
+#!/home/crc/retro12/bin/rre
+
 # Atua: A Gopher Server
 
 Atua is a gopher server written in Retro.
@@ -19,11 +21,6 @@ Atua uses Retro's *rre* interface layer. Designed to run a single
 program then exit, this makes using Retro as a scripting language
 possible.
 
-````
-#!/home/crc/retro12/bin/rre
-drop
-````
-
 # Configuration
 
 Atua needs to know:
@@ -43,8 +40,8 @@ Atua needs to know:
 # I/O Words
 
 Retro only supports basic output by default. The RRE interface that
-Atua uses adds support for files and stdin, so we map these to words
-and provide some other helpers.
+Atua uses adds support for files and stdin, so we use these and
+provide some other helpers.
 
 *Console Output*
 
@@ -62,34 +59,11 @@ The `gets` word could easily be made more generic in terms of what
 it checks for. This suffices for a Gopher server though.
 
 ````
-:getc (-c) `1001 ;
 :eol? (c-f)
   [ ASCII:CR eq? ] [ ASCII:LF eq? ] [ ASCII:HT eq? ] tri or or ;
 :gets (a-)
   buffer:set
   [ getc dup buffer:add eol? not ] while ;
-````
-
-*File I/O*
-
-Retro's file I/O words are still under development. This is similar
-to the iOS `file:` namespace, but there are some small differences.
-
-````
-#0 'file:R const
-#1 'file:W const
-#2 'file:A const
-#3 'file:M const
-:file:open  (sm-h) `118 ;
-:file:close (h-)   `119 ;
-:file:read  (h-c)  `120 ;
-:file:write (ch-f) `121 ;
-:file:tell  (ch-f) `122 ;
-:file:size  (h-n)  `124 ;
-:file:exists?  (s-f)
-  file:R file:open dup n:-zero?
-  [ file:close TRUE ]
-  [ drop FALSE ] choose ;
 ````
 
 # Gopher Namespace
@@ -197,18 +171,25 @@ the index footer.
 :gopher:get-selector (-)
   &Selector gets ;
 
-(Rewrite_This:_It's_too_big)
+:gopher:file-requested? (-f)
+  &Selector s:chop s:length n:-zero? ;
+
+:gopher:valid-file? (-f)
+  [ @Requested-File file:R file:open file:size n:positive? ]
+  [ FALSE ] choose ;
+
+:gopher:get-index (-s)
+  @Requested-Index file:exists?
+  [ @Requested-Index &Server-Info v:on  ]
+  [ PATH '/empty.index s:append         ] choose ;
+
 :gopher:file-for-request (-s)
   &Mode v:off
   construct-filenames
-  &Selector s:chop s:length n:-zero?
-  [ @Requested-File file:exists?
-    [ @Requested-File file:R file:open file:size n:positive? ] [ FALSE ] choose
-    [ @Requested-File ]
-    [ @Requested-Index file:exists?
-      [ @Requested-Index &Server-Info v:on  ]
-      [ PATH '/empty.index s:append ] choose
-    ] choose
+  gopher:file-requested?
+  [ @Requested-File file:exists? gopher:valid-file?
+    [ @Requested-File  ]
+    [ gopher:get-index ] choose
   ]
   [ PATH DEFAULT-INDEX s:append &Server-Info v:on ] choose
 ;

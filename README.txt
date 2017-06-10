@@ -19,12 +19,12 @@ Setting up:
 You'll need Retro 12 (get it at forthworks.com/retro). Build this and
 put the `rre` binary somewhere.
 
-Take the extracted sources:
+In the source files:
 
- * atua.forth
- * atua-www.forth
+ * Atua.md
+ * Atua-WWW.md
 
-And adjust the path to `rre` for your system.
+Ddjust the path to `rre` for your system and the path to your files.
 
 Then, either use tcpserver:
 
