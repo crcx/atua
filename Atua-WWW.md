@@ -253,7 +253,7 @@ The `gopher:icon` displays an indicator for menu items.
   $4 [ '&nbsp;BIN&nbsp;&nbsp; puts ] case
   $5 [ '&nbsp;BIN&nbsp;&nbsp; puts ] case
   $6 [ '&nbsp;UUE&nbsp;&nbsp; puts ] case
-  $7 [ '&nbsp;???&nbsp;&nbsp; puts ] case
+  $7 [ '[FND]_ puts ] case
   $8 [ '&nbsp;TEL&nbsp;&nbsp; puts ] case
   $9 [ '&nbsp;BIN&nbsp;&nbsp; puts ] case
   $I [ '&nbsp;IMG&nbsp;&nbsp; puts ] case
@@ -303,6 +303,7 @@ The `gopher:icon` displays an indicator for menu items.
 
 :gopher:generate-index (f-)
   'Content-type:_text/html puts eol eol
+  '<style>tt_{_white-space:_pre;_}</style> puts eol eol
   file:R file:open !FID
   @FID file:size !Size
   [ buffer gopher:gets
