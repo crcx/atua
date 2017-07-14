@@ -303,7 +303,7 @@ The `gopher:icon` displays an indicator for menu items.
 
 :gopher:generate-index (f-)
   'Content-type:_text/html puts eol eol
-  '<style>tt_{_white-space:_pre;_}</style> puts eol eol
+  '<style>tt_{_white-space:_pre;_}_*_{_color:_#aaa;_background:_#121212;_font-size:_large;_}_a_{_color:_#EE7600;_}</style> puts eol eol
   file:R file:open !FID
   @FID file:size !Size
   [ buffer gopher:gets
