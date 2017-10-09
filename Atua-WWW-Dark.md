@@ -304,7 +304,7 @@ The `gopher:icon` displays an indicator for menu items.
 :gopher:generate-index (f-)
   'Content-type:_text/html puts eol eol
   '<style>tt_{_white-space:_pre;_} puts
-  (_*_{_color:_#aaa;_background:_#121212;_font-size:_large;_}_a_{_color:_#EE7600;_}
+  '_*_{_color:_#aaa;_background:_#121212;_font-size:_large;_}_a_{_color:_#EE7600;_} puts
   '</style> puts eol eol
   file:R file:open !FID
   @FID file:size !Size
@@ -340,7 +340,7 @@ The only thing left is the top level server.
     '<tt> puts
     '<a_href="http://forthworks.com:8888 puts &Selector s:chop puts '">Light_on_Dark</a>_or_ puts
     '<a_href="http://forthworks.com:80 puts &Selector s:chop puts '">Dark_on_Light</a> puts
-    '</tt> puts ]
+     '</tt> puts ]
   [ gopher:read-file gopher:send ] choose
 ;
 ````
